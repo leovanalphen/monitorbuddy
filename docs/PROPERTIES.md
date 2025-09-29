@@ -5,6 +5,7 @@ This document lists the supported **VESA VCP (Virtual Control Panel)** codes and
 ---
 
 ## Legend
+
 - **RW** – Read/Write (continuous values)
 - **RO** – Read-Only (queried values)
 - **WO** – Write-Only (momentary triggers)
@@ -99,4 +100,3 @@ This document lists the supported **VESA VCP (Virtual Control Panel)** codes and
 - If your monitor is not listed here, contributions are welcome!
 
 ---
-
