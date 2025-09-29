@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch monitorbuddy (ucrt64)",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder/cmd/monitorbuddy}",
+      "env": {
+        "PATH": "C:/msys64/ucrt64/bin:${env:PATH}",
+        "CGO_ENABLED": "1",
+        "CC": "C:/msys64/ucrt64/bin/gcc.exe",
+        "CXX": "C:/msys64/ucrt64/bin/g++.exe",
+        "CGO_LDFLAGS": "-lsetupapi"
+      }
+    }
+  ]
+}

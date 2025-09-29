@@ -1,0 +1,94 @@
+# ---- Go build artifacts -------------------------------------------------
+
+# Binaries
+
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Local build dirs
+
+/bin/
+/build/
+/dist/
+/coverage/
+/tmp/
+
+# Go vendor (uncomment if you vendor deps)
+
+# /vendor/
+
+# ---- OS & editor cruft --------------------------------------------------
+
+# macOS
+
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Editors/IDEs
+
+.idea/
+*.iml
+.vscode/**
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# ---- Logs & reports -----------------------------------------------------
+
+*.log
+*.trace
+*.pprof
+*.prof
+*.cover
+coverage.*
+
+# ---- Toolchain/CGO/MSYS2 bits ------------------------------------------
+
+# Object & static libs
+
+*.o
+*.obj
+*.a
+*.lib
+*.lo
+*.lai
+*.la
+*.pdb
+*.ilk
+
+# cgo intermediates
+
+*.cgo1.go
+*.cgo2.c
+*cgo**/*
+
+# ---- Project-specific ---------------------------------------------------
+
+# Release packaging
+
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+
+# Environment & local configs
+
+.env
+.env.*
+
+# Makefile byproducts (if any custom targets create these)
+
+*.bak
+*.tmp
