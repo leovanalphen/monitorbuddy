@@ -60,7 +60,7 @@ jobs:
               with:
                   distribution: goreleaser
                   version: v2.12.3
-                  args: release --snapshot --clean --skip-publish
+                  args: release --snapshot --clean
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             - name: Upload snapshot artifacts
