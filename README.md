@@ -2,8 +2,6 @@
 
 Monitorbuddy (`mbuddy`) is a command-line tool to **read and change** monitor settings via **DDC/CI over the Realtek HID** (as used by Gigabyte/AORUS OSD Sidekick and similar monitor software). It is open-source and extensible for other vendors.
 
----
-
 ## Project Overview
 
 - **MonitorBuddy CLI (Open Source)**  
@@ -15,19 +13,16 @@ Monitorbuddy (`mbuddy`) is a command-line tool to **read and change** monitor se
   Allows one-click brightness, input switching, KVM toggles, and more.  
   *(coming soon)*
 
----
-
 ## Supported / Verified Monitors
 
 - **Gigabyte M32U** (original target)
-- **Gigabyte M32Q** ([text](https://github.com/kelvie/gbmonctl/issues/11))
-- **Gigabyte M32QC** ([text](https://github.com/kelvie/gbmonctl/issues/7))
-- **Gigabyte M27Q** ([text](https://github.com/kelvie/gbmonctl/issues/9))
+- **Gigabyte M32Q** ([source](https://github.com/kelvie/gbmonctl/issues/11))
+- **Gigabyte M32QC** ([source](https://github.com/kelvie/gbmonctl/issues/7))
+- **Gigabyte M27Q** ([source](https://github.com/kelvie/gbmonctl/issues/9))
 - **AORUS CO49DQ** (verified; same HID protocol)
-- **Any Realtek HID-based Gigabyte/AORUS monitor** (VID `0x0BDA`, PID `0x1100`)  
 - **Other brands coming soon** (experimental)
 
-Any Gigabyte that exposes a Realtek HID device (usually **VID `0x0BDA`**, PID `0x1100`) is *likely* compatible.
+Any Gigabyte display that exposes a Realtek HID device (usually **VID `0x0BDA`**, PID `0x1100`) is *likely* compatible.
 
 ---
 
@@ -67,34 +62,6 @@ go build -v -o mbuddy.exe ./cmd/monitorbuddy
 > If the linker later complains about SetupAPI, add:\
 > `setx CGO_LDFLAGS "-lsetupapi"`
 
-#### VS Code one-click build (Windows)
-
-Create `.vscode/tasks.json`:
-
-```json
-{
-  "version": "2.0.0",
-  "tasks": [
-    {
-      "label": "go build (ucrt64)",
-      "type": "shell",
-      "command": "go",
-      "args": ["build", "-v", "-o", "mbuddy.exe", "."],
-      "options": {
-        "env": {
-          "PATH": "C:/msys64/ucrt64/bin:${env:PATH}",
-          "CGO_ENABLED": "1",
-          "CC": "C:/msys64/ucrt64/bin/gcc.exe",
-          "CXX": "C:/msys64/ucrt64/bin/g++.exe",
-          "CGO_LDFLAGS": "-lsetupapi"
-        }
-      },
-      "group": { "kind": "build", "isDefault": true }
-    }
-  ]
-}
-```
-
 #### Makefile (Linux/macOS/Windows with MSYS2)
 
 A `Makefile` is included for convenience with cross‑platform targets:
@@ -120,13 +87,11 @@ On Windows you must have MSYS2 installed and use the correct gcc (`ucrt64` recom
 
 Example:
 
-```bash
+```powershell
 # build and list devices
 make build
 ./mbuddy.exe -list
 ```
-
----
 
 ## Usage
 
@@ -145,8 +110,6 @@ mbuddy -get brightness -mon 0
 mbuddy -set brightness -val 75 -mon 0
 ```
 
----
-
 ## Property Reference
 
 See [docs/PROPERTIES.md](./docs/PROPERTIES.md) for a full property reference, including:
@@ -154,16 +117,11 @@ See [docs/PROPERTIES.md](./docs/PROPERTIES.md) for a full property reference, in
 - Standard VCP properties (DDC/CI)
 - Gigabyte / AORUS vendor extensions
 
----
-
 ## Stream Deck Plugin (Commercial)
 
-A paid Stream Deck plugin built on MonitorBuddy is in the works.\
-👉 **[Plugin page — coming soon]**
+A paid Stream Deck plugin built on MonitorBuddy is in the works. 👉 **[Plugin page — coming soon]**
 
 This plugin uses MonitorBuddy as a backend to control monitors directly from your Stream Deck.
-
----
 
 ## Troubleshooting
 
@@ -171,8 +129,6 @@ This plugin uses MonitorBuddy as a backend to control monitors directly from you
 - **Windows build errors**: use MSYS2 **ucrt64** or **mingw64** gcc; MSVC `cl/link` won’t work.
 - **Nothing changes on monitor**: ensure the monitor’s **USB upstream** is connected.
 - **Parsing errors on read**: some models are sensitive to timing; retries are included, try rerunning.
-
----
 
 ## Contributing
 
