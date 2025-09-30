@@ -1,0 +1,38 @@
+version: 2
+
+project_name: monitorbuddy
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: mbuddy
+    main: ./cmd/monitorbuddy       # <-- CLI entrypoint
+    binary: mbuddy
+    env: [CGO_ENABLED=1]
+    goos: [linux]                  # start linux-only; fan out later
+    goarch: [amd64]
+    flags: [-trimpath]
+    ldflags:
+      - -s -w
+      - -X leovanalphen/monitorbuddy/internal/app.Version={{.Version}}
+      - -X leovanalphen/monitorbuddy/internal/app.Commit={{.Commit}}
+      - -X leovanalphen/monitorbuddy/internal/app.Date={{.Date}}
+
+archives:
+  - id: tgz
+    ids: [mbuddy]
+    formats: ['tar.gz', 'zip']
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+
+checksum:
+  name_template: "checksums_{{ .Version }}.txt"
+
+changelog:
+  use: github
+  filters:
+    exclude:
+      - '^chore:'
+      - '^docs:'
+      - '^style:'
