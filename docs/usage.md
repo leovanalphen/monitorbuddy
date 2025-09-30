@@ -1,6 +1,6 @@
-# Monitor Buddy — Usage Guide
+# MonitorBuddy — Usage Guide
 
-This document provides detailed usage instructions for the **Monitor Buddy CLI**.
+This document provides detailed usage instructions for the **MonitorBuddy CLI**.
 
 ---
 
@@ -28,7 +28,7 @@ This document provides detailed usage instructions for the **Monitor Buddy CLI**
 
 ## Overview
 
-`monitor-buddy` is a command-line tool to control monitor settings using **DDC/CI over USB HID**. It supports both standard VCP codes and vendor‑specific extensions (e.g., Gigabyte/AORUS).
+Monitorbuddy (`mbuddy`) is a command-line tool to control monitor settings using **DDC/CI over USB HID**. It supports both standard VCP codes and vendor‑specific extensions (e.g., Gigabyte/AORUS).
 
 ## Installation
 
@@ -36,7 +36,7 @@ This document provides detailed usage instructions for the **Monitor Buddy CLI**
 
 ```bash
 sudo apt install libhidapi-dev libudev-dev
-go install github.com/YOURNAME/monitor-buddy@latest
+go install github.com/leovanalphen/monitorbuddy@latest
 ```
 
 ### macOS
@@ -45,7 +45,7 @@ go install github.com/YOURNAME/monitor-buddy@latest
 brew install hidapi
 CGO_CFLAGS="-I$(brew --prefix hidapi)/include" \
 CGO_LDFLAGS="-L$(brew --prefix hidapi)/lib" \
-go install github.com/YOURNAME/monitor-buddy@latest
+go install github.com/leovanalphen/monitorbuddy@latest
 ```
 
 ### Windows (MSYS2)
@@ -60,19 +60,19 @@ make win-ucrt64
 ### Listing devices
 
 ```bash
-monitor-buddy -list
+mbuddy -list
 ```
 
 ### Reading properties
 
 ```bash
-monitor-buddy -get brightness -mon 0
+mbuddy -get brightness -mon 0
 ```
 
 ### Setting properties
 
 ```bash
-monitor-buddy -set brightness -val 50 -mon 0
+mbuddy -set brightness -val 50 -mon 0
 ```
 
 ## Advanced Options
@@ -80,7 +80,7 @@ monitor-buddy -set brightness -val 50 -mon 0
 ### VID/PID filters
 
 ```bash
-monitor-buddy -list -vid 0x0bda -pid 0x1100
+mbuddy -list -vid 0x0bda -pid 0x1100
 ```
 
 ### Vendor properties
@@ -88,7 +88,7 @@ monitor-buddy -list -vid 0x0bda -pid 0x1100
 Enable/disable vendor properties:
 
 ```bash
-monitor-buddy -props -include-gigabyte=false
+mbuddy -props -include-gigabyte=false
 ```
 
 ### Frame base tuning
@@ -96,13 +96,13 @@ monitor-buddy -props -include-gigabyte=false
 Some monitors require a different frame length base:
 
 ```bash
-monitor-buddy -set brightness -val 20 -frame-base 0x80
+mbuddy -set brightness -val 20 -frame-base 0x80
 ```
 
 ### Dry-run mode
 
 ```bash
-monitor-buddy -set brightness -val 30 -n
+mbuddy -set brightness -val 30 -n
 ```
 
 ## Examples
@@ -110,13 +110,13 @@ monitor-buddy -set brightness -val 30 -n
 - Set brightness on multiple monitors:
 
 ```bash
-monitor-buddy -set brightness -val 70 -mon 0,1
+mbuddy -set brightness -val 70 -mon 0,1
 ```
 
 - Read firmware level:
 
 ```bash
-monitor-buddy -get fw-level -mon 0
+mbuddy -get fw-level -mon 0
 ```
 
 ## Troubleshooting

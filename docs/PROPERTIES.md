@@ -1,4 +1,4 @@
-# Monitor Buddy — Property Reference
+# MonitorBuddy — Property Reference
 
 This document lists the supported **VESA VCP (Virtual Control Panel)** codes and known **vendor-specific extensions** (initially focused on Gigabyte/AORUS), grouped by type.
 

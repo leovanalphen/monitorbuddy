@@ -1,16 +1,16 @@
 # Monitor Buddy — Cross-Platform Monitor Control
 
-`monitorbuddy` is a command-line tool to **read and change** monitor settings via **DDC/CI over the Realtek HID** (as used by Gigabyte/AORUS OSD Sidekick and similar monitor software). It is open-source and extensible for other vendors.
+Monitorbuddy (`mbuddy`) is a command-line tool to **read and change** monitor settings via **DDC/CI over the Realtek HID** (as used by Gigabyte/AORUS OSD Sidekick and similar monitor software). It is open-source and extensible for other vendors.
 
 ---
 
 ## Project Overview
 
-- **Monitor Buddy CLI (Open Source)**  
+- **MonitorBuddy CLI (Open Source)**  
   Cross-platform monitor control for Linux, macOS, and Windows.  
   Licensed under [Apache 2.0](./LICENSE), with portions under MIT (see [NOTICE](./NOTICE)).
 
-- **Monitor Buddy Stream Deck Plugin (Paid)**  
+- **MonitorBuddy Stream Deck Plugin (Paid)**  
   A polished Elgato Stream Deck plugin powered by the CLI backend.  
   Allows one-click brightness, input switching, KVM toggles, and more.  
   *(coming soon)*
@@ -61,7 +61,7 @@ $env:CGO_ENABLED = "1"
 $env:CC  = "C:\\msys64\\ucrt64\\bin\\gcc.exe"
 $env:CXX = "C:\\msys64\\ucrt64\\bin\\g++.exe"
 
-go build -v -o monitorbuddy.exe ./cmd/monitorbuddy
+go build -v -o mbuddy.exe ./cmd/monitorbuddy
 ```
 
 > If the linker later complains about SetupAPI, add:\
@@ -79,7 +79,7 @@ Create `.vscode/tasks.json`:
       "label": "go build (ucrt64)",
       "type": "shell",
       "command": "go",
-      "args": ["build", "-v", "-o", "monitorbuddy.exe", "."],
+      "args": ["build", "-v", "-o", "mbuddy.exe", "."],
       "options": {
         "env": {
           "PATH": "C:/msys64/ucrt64/bin:${env:PATH}",
@@ -123,7 +123,7 @@ Example:
 ```bash
 # build and list devices
 make build
-./monitorbuddy.exe -list
+./mbuddy.exe -list
 ```
 
 ---
@@ -136,13 +136,13 @@ Quick examples:
 
 ```bash
 # Default filters (Realtek 0x0BDA:0x1100)
-monitorbuddy -list
+mbuddy -list
 
 # Read current brightness
-monitorbuddy -get brightness -mon 0
+mbuddy -get brightness -mon 0
 
 # Set brightness to 75
-monitorbuddy -set brightness -val 75 -mon 0
+mbuddy -set brightness -val 75 -mon 0
 ```
 
 ---
@@ -158,10 +158,10 @@ See [docs/PROPERTIES.md](./docs/PROPERTIES.md) for a full property reference, in
 
 ## Stream Deck Plugin (Commercial)
 
-A paid Stream Deck plugin built on Monitor Buddy is in the works.\
+A paid Stream Deck plugin built on MonitorBuddy is in the works.\
 👉 **[Plugin page — coming soon]**
 
-This plugin uses Monitor Buddy as a backend to control monitors directly from your Stream Deck.
+This plugin uses MonitorBuddy as a backend to control monitors directly from your Stream Deck.
 
 ---
 
