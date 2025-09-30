@@ -3,7 +3,8 @@ name: Release
 on:
   push:
     tags:
-      - "v*"
+      - 'v*'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -16,14 +17,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0   # goreleaser needs full history for changelog
+          fetch-depth: 0   # GoReleaser needs full git history & tags
 
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: "1.23"
+          go-version: '1.22'
 
-      - name: Install system deps (CGO for go-hid)
+      # Needed for go-hid (CGO) on Linux
+      - name: Install Linux dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y libudev-dev libusb-1.0-0-dev
