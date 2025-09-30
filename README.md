@@ -1,4 +1,4 @@
-# Monitor Buddy — Cross-Platform Monitor Control
+# MonitorBuddy — Cross-Platform Monitor Control
 
 Monitorbuddy (`mbuddy`) is a command-line tool to **read and change** monitor settings via **DDC/CI over the Realtek HID** (as used by Gigabyte/AORUS OSD Sidekick and similar monitor software). It is open-source and extensible for other vendors.
 
