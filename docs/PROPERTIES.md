@@ -95,6 +95,7 @@ This document lists the supported **VESA VCP (Virtual Control Panel)** codes and
 ## Notes
 
 - Vendor-specific codes are **not standardized**; values may differ by model or firmware version.
+- Not all displays support all the listed VCP properties above, this is depended on the model and / or firmware version.
 - Use `-props` to list all properties recognized by your build of Monitor Buddy.
 - Safe practice: use dry-run (`-n`) before writing to unfamiliar properties.
 - If your monitor is not listed here, contributions are welcome!
