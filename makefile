@@ -1,73 +1,71 @@
-# Makefile for monitorbuddy
+# Makefile for monitorbuddy (cross-platform)
 
 APP      ?= mbuddy
-OUT      ?= $(APP).exe
 PKG      ?= ./cmd/monitorbuddy
-LDFLAGS  ?=
 GOFLAGS  ?= -v
 
-# ---- Common targets ------------------------------------------------
+# --- Derive OS/Arch -------------------------------------------------
+GOOS     ?= $(shell go env GOOS)
+GOARCH   ?= $(shell go env GOARCH)
 
-.PHONY: all clean
+# --- Version metadata via ldflags -----------------------------------
+VERSION  ?= $(shell git describe --tags --always --dirty 2>/dev/null || echo dev)
+COMMIT   ?= $(shell git rev-parse --short HEAD 2>/dev/null || echo none)
+
+# DATE + env wrapper differ per-OS
+ifeq ($(GOOS),windows)
+  # ISO8601 UTC via PowerShell
+  DATE    := $(shell powershell -NoProfile -Command "(Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')")
+  BUILDENV := set CGO_ENABLED=1 &&
+  EXE      := .exe
+  LDQUOTE  := "
+else
+  DATE    := $(shell date -u +%Y-%m-%dT%H:%M:%SZ)
+  BUILDENV := CGO_ENABLED=1
+  EXE      :=
+  LDQUOTE  := '
+endif
+
+LDFLAGS  ?= -s -w \
+	-X leovanalphen/monitorbuddy/internal/app.Version=$(VERSION) \
+	-X leovanalphen/monitorbuddy/internal/app.Commit=$(COMMIT) \
+	-X leovanalphen/monitorbuddy/internal/app.Date=$(DATE)
+
+# --- Targets --------------------------------------------------------
+
+.PHONY: all build test clean help
 all: build
 
-clean:
+build: ## Build for host OS/Arch with version metadata
+	@echo ">> Building $(APP) ($(GOOS)/$(GOARCH)) version=$(VERSION) commit=$(COMMIT)"
+	$(BUILDENV) go build $(GOFLAGS) -ldflags $(LDQUOTE)$(LDFLAGS)$(LDQUOTE) -o $(APP)$(EXE) $(PKG)
+
+test:  ## Run tests
+	@echo ">> go test"
+	go test ./...
+
+clean: ## Clean build artifacts and caches
 	go clean -cache
 	go clean -x
 	-@rm -f $(APP) $(APP).exe
 
-# ---- Windows (MSYS2 UCRT64 / MinGW64) ------------------------------
+# Optional helpers if you want explicit OS targets
 
-# Recommended: UCRT64 toolchain
-.PHONY: win-ucrt64
-win-ucrt64:
-	@echo ">> Building with MSYS2 UCRT64 (gcc)"
-	set CGO_ENABLED=1 && \
-	set CC=C:\msys64\ucrt64\bin\gcc.exe && \
-	set CXX=C:\msys64\ucrt64\bin\g++.exe && \
-	set PATH=C:\msys64\ucrt64\bin;%PATH% && \
-	go build $(GOFLAGS) -o $(OUT) $(PKG)
-
-# Alternative: MinGW64 toolchain
-.PHONY: win-mingw64
-win-mingw64:
-	@echo ">> Building with MSYS2 MinGW64 (gcc)"
-	set CGO_ENABLED=1 && \
-	set CC=C:\msys64\mingw64\bin\gcc.exe && \
-	set CXX=C:\msys64\mingw64\bin\g++.exe && \
-	set PATH=C:\msys64\mingw64\bin;%PATH% && \
-	go build $(GOFLAGS) -o $(OUT) $(PKG)
-
-# If your setup needs SetupAPI explicitly (usually not with MSYS2):
-.PHONY: win-ucrt64-setupapi
-win-ucrt64-setupapi:
-	@echo ">> Building UCRT64 with -lsetupapi"
-	set CGO_ENABLED=1 && \
-	set CC=C:\msys64\ucrt64\bin\gcc.exe && \
-	set CXX=C:\msys64\ucrt64\bin\g++.exe && \
-	set PATH=C:\msys64\ucrt64\bin;%PATH% && \
-	set CGO_LDFLAGS=-lsetupapi && \
-	go build $(GOFLAGS) -o $(OUT) $(PKG)
-
-# ---- Linux ---------------------------------------------------------
-
-.PHONY: linux
+.PHONY: linux mac win
 linux:
 	@echo ">> Building on Linux"
-	CGO_ENABLED=1 go build $(GOFLAGS) -o $(APP) $(PKG)
+	GOOS=linux CGO_ENABLED=1 go build $(GOFLAGS) -ldflags '$(LDFLAGS)' -o $(APP) $(PKG)
 
-# ---- macOS (Homebrew hidapi) --------------------------------------
-
-# Assumes: brew install hidapi
-.PHONY: mac
-mac:
+mac:   # requires: brew install hidapi
 	@echo ">> Building on macOS with Homebrew hidapi"
-	CGO_ENABLED=1 \
+	GOOS=darwin CGO_ENABLED=1 \
 	CGO_CFLAGS="-I$$(brew --prefix hidapi)/include" \
 	CGO_LDFLAGS="-L$$(brew --prefix hidapi)/lib" \
-	go build $(GOFLAGS) -o $(APP) $(PKG)
+	go build $(GOFLAGS) -ldflags '$(LDFLAGS)' -o $(APP) $(PKG)
 
-# ---- Convenience meta target --------------------------------------
+win:
+	@echo ">> Building on Windows"
+	GOOS=windows CGO_ENABLED=1 go build $(GOFLAGS) -ldflags '$(LDFLAGS)' -o $(APP).exe $(PKG)
 
-.PHONY: build
-build: win-ucrt64
+help:
+	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-18s\033[0m %s\n", $$1, $$2}'

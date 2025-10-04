@@ -8,6 +8,7 @@ import (
 )
 
 var (
+	flagVersion   = flag.Bool("version", false, "print version and exit")
 	flagList      = flag.Bool("list", false, "List candidate HID monitor devices and exit")
 	flagMonIdxs   = flag.String("mon", "", "Comma-separated monitor indices to target (from -list). If empty, use first match.")
 	flagVID       = flag.String("vid", "0x0bda", "Vendor ID filter in hex (e.g., 0x0bda for Realtek). Use 0 to allow any.")
@@ -27,6 +28,7 @@ var (
 
 func Parse() { flag.Parse() }
 
+func FlagVersion() bool   { return *flagVersion }
 func FlagList() bool      { return *flagList }
 func FlagMonIdxs() string { return *flagMonIdxs }
 func FlagVID() string     { return *flagVID }

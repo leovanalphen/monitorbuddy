@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/sstallion/go-hid"
@@ -13,6 +14,13 @@ import (
 func main() {
 	cli.Parse() // parse flags first for registry options etc.
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
+
+	// Handle version early—no HID init needed
+	if cli.FlagVersion() {
+		// Keep the output simple and script-friendly
+		fmt.Printf("mbuddy %s (commit %s, %s)\n", app.Version, app.Commit, app.Date)
+		return
+	}
 
 	if err := hid.Init(); err != nil {
 		log.Fatal(err)
