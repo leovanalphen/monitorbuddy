@@ -9,6 +9,7 @@
 *.dylib
 *.test
 *.out
+mbuddy
 
 # Local build dirs
 
@@ -92,3 +93,4 @@ coverage.*
 
 *.bak
 *.tmp
+
